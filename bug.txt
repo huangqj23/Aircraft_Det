@@ -1,0 +1,3 @@
+1.config文件里不要通过import引入常规python库，如os,sys，只能引入其他配置文件
+2.batch_size=2情况下，num_query与image_size可以显著减少显存占用。
+3.深层集成后，通过update更新配置，如果用_delete_=True，可能会失效，导致之前配置中的参数无法适配，需要手动修改之前配置，去除_delete_参数。
