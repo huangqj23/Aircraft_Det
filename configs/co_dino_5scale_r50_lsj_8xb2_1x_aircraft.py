@@ -362,7 +362,7 @@ test_pipeline = [
     dict(type=LoadImageFromFile),
     dict(type=Resize, scale=image_size, keep_ratio=True),  # diff
     dict(type=Pad, size=image_size, pad_val=dict(img=(114, 114, 114))),
-    dict(type=LoadAnnotations, with_bbox=True, with_mask=True),
+    dict(type=LoadAnnotations, with_bbox=True, with_mask=False),
     dict(
         type=PackDetInputs,
         meta_keys=('img_id', 'img_path', 'ori_shape', 'img_shape',
