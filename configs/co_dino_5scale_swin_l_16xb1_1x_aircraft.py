@@ -1,5 +1,5 @@
 from mmengine.config import read_base
-from models.swin import SwinTransformer
+from mmdet.models.backbones.swin import SwinTransformer
 from mmengine.model.weight_init import PretrainedInit
 
 with read_base():

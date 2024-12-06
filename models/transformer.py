@@ -197,7 +197,6 @@ class DeformableDetrTransformerDecoder(TransformerLayerSequence):
         return output, reference_points
 
 
-@MODELS.register_module(force=True)
 class DeformableDetrTransformer(Transformer):
     """Implements the DeformableDETR transformer.
 
@@ -546,7 +545,6 @@ class DeformableDetrTransformer(Transformer):
             inter_references_out, None, None
 
 
-@MODELS.register_module()
 class CoDeformableDetrTransformerDecoder(TransformerLayerSequence):
     """Implements the decoder in DETR transformer.
 
@@ -641,7 +639,6 @@ class CoDeformableDetrTransformerDecoder(TransformerLayerSequence):
         return output, reference_points
 
 
-@MODELS.register_module()
 class CoDeformableDetrTransformer(DeformableDetrTransformer):
 
     def __init__(self,
@@ -969,7 +966,6 @@ def build_MLP(input_dim, hidden_dim, output_dim, num_layers):
     return nn.Sequential(*layers)
 
 
-@MODELS.register_module()
 class DinoTransformerDecoder(DeformableDetrTransformerDecoder):
 
     def __init__(self, *args, **kwargs):
@@ -1073,7 +1069,6 @@ class DinoTransformerDecoder(DeformableDetrTransformerDecoder):
         return output, reference_points
 
 
-@MODELS.register_module()
 class CoDinoTransformer(CoDeformableDetrTransformer):
 
     def __init__(self, *args, **kwargs):
@@ -1296,7 +1291,6 @@ class CoDinoTransformer(CoDeformableDetrTransformer):
         return inter_states, inter_references_out
 
 
-@MODELS.register_module()
 class DetrTransformerEncoder(TransformerLayerSequence):
     """TransformerEncoder of DETR.
 

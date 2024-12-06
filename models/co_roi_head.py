@@ -12,7 +12,6 @@ from mmdet.structures.bbox import bbox2roi
 from mmdet.utils import InstanceList
 
 
-@MODELS.register_module()
 class CoStandardRoIHead(StandardRoIHead):
 
     def loss(self, x: Tuple[Tensor], rpn_results_list: InstanceList,

@@ -21,7 +21,6 @@ from mmdet.structures.bbox import (bbox_cxcywh_to_xyxy, bbox_overlaps,
 from mmdet.utils import InstanceList, reduce_mean
 
 
-@MODELS.register_module()
 class CoDINOHead(DINOHead):
 
     def __init__(self,

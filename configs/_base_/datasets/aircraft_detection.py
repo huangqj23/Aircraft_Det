@@ -1,6 +1,15 @@
+from mmdet.datasets.transforms import LoadAnnotations, Resize, RandomFlip, PackDetInputs, RandomCrop, \
+                FilterAnnotations, Pad, CopyPaste
+from mmcv.transforms import LoadImageFromFile, RandomResize, RandomChoice, RandomChoiceResize
+from mmdet.models.data_preprocessors import BatchFixedSizePad, DetDataPreprocessor
+from mmdet.datasets import CocoDataset, ConcatDataset, AspectRatioBatchSampler
+from mmengine.dataset import DefaultSampler
+from mmdet.evaluation.metrics import CocoMetric
+from datasets.aircraft import AircraftDataset
+
 # dataset settings
-dataset_type = 'CocoDataset'
-data_root = '/Users/huangquanjin/Code/mmlab/data/coco128/'
+dataset_type = AircraftDataset
+data_root = '/data1/DATA_126/hqj/MAR20/'
 
 # Example to use different file client
 # Method 1: simply set the data root and let the file I/O module
@@ -19,19 +28,19 @@ data_root = '/Users/huangquanjin/Code/mmlab/data/coco128/'
 backend_args = None
 
 train_pipeline = [
-    dict(type='LoadImageFromFile', backend_args=backend_args),
-    dict(type='LoadAnnotations', with_bbox=True),
-    dict(type='Resize', scale=(1333, 800), keep_ratio=True),
-    dict(type='RandomFlip', prob=0.5),
-    dict(type='PackDetInputs')
+    dict(type=LoadImageFromFile, backend_args=backend_args),
+    dict(type=LoadAnnotations, with_bbox=True),
+    dict(type=Resize, scale=(1333, 800), keep_ratio=True),
+    dict(type=RandomFlip, prob=0.5),
+    dict(type=PackDetInputs)
 ]
 test_pipeline = [
-    dict(type='LoadImageFromFile', backend_args=backend_args),
-    dict(type='Resize', scale=(1333, 800), keep_ratio=True),
+    dict(type=LoadImageFromFile, backend_args=backend_args),
+    dict(type=Resize, scale=(1333, 800), keep_ratio=True),
     # If you don't have a gt annotation, delete the pipeline
-    dict(type='LoadAnnotations', with_bbox=True),
+    dict(type=LoadAnnotations, with_bbox=True),
     dict(
-        type='PackDetInputs',
+        type=PackDetInputs,
         meta_keys=('img_id', 'img_path', 'ori_shape', 'img_shape',
                    'scale_factor'))
 ]
@@ -39,14 +48,14 @@ train_dataloader = dict(
     batch_size=2,
     num_workers=2,
     persistent_workers=True,
-    sampler=dict(type='DefaultSampler', shuffle=True),
-    batch_sampler=dict(type='AspectRatioBatchSampler'),
+    sampler=dict(type=DefaultSampler, shuffle=True),
+    batch_sampler=dict(type=AspectRatioBatchSampler),
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
-        ann_file='annotations/coco128.json',
-        data_prefix=dict(img='images/'),
-        filter_cfg=dict(filter_empty_gt=True, min_size=32),
+        ann_file='val/coco/val.json',
+        data_prefix=dict(img='val/images/'),
+        filter_cfg=dict(filter_empty_gt=True, min_size=1),
         pipeline=train_pipeline,
         backend_args=backend_args))
 val_dataloader = dict(
@@ -54,20 +63,20 @@ val_dataloader = dict(
     num_workers=2,
     persistent_workers=True,
     drop_last=False,
-    sampler=dict(type='DefaultSampler', shuffle=False),
+    sampler=dict(type=DefaultSampler, shuffle=False),
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
-        ann_file='annotations/coco128.json',
-        data_prefix=dict(img='images/'),
+        ann_file='train/coco/train.json',
+        data_prefix=dict(img='train/images/'),
         test_mode=True,
         pipeline=test_pipeline,
         backend_args=backend_args))
 test_dataloader = val_dataloader
 
 val_evaluator = dict(
-    type='CocoMetric',
-    ann_file=data_root + 'annotations/coco128.json',
+    type=CocoMetric,
+    ann_file=data_root + 'train/coco/train.json',
     metric='bbox',
     format_only=False,
     backend_args=backend_args)

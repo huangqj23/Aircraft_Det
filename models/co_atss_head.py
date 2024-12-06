@@ -9,7 +9,6 @@ from mmdet.registry import MODELS
 from mmdet.utils import InstanceList, OptInstanceList, reduce_mean
 
 
-@MODELS.register_module()
 class CoATSSHead(ATSSHead):
 
     def loss_by_feat(

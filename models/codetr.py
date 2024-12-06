@@ -11,7 +11,6 @@ from mmdet.structures import OptSampleList, SampleList
 from mmdet.utils import InstanceList, OptConfigType, OptMultiConfig
 
 
-@MODELS.register_module()
 class CoDETR(BaseDetector):
 
     def __init__(
